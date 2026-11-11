@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pierre Gbodja Noukpo — Géomatique, photogrammétrie et cartographie</title>
+  <meta name="description" content="Portfolio de Pierre Gbodja Noukpo : analyse spatiale, télédétection, photogrammétrie et cartographie.">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <header class="nav">
+    <a class="logo" href="#top">NOUKPO<span>.</span></a>
+    <nav aria-label="Navigation principale">
+      <a href="#projets">Carte</a>
+      <a href="#comparateur">Comparateur</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#competences">Compétences</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+
+  <!-- ============ 1. EN-TÊTE ============ -->
+  <section class="hero" id="top">
+    <!-- Les courbes de niveau sont générées et animées par script.js -->
+    <svg class="contours" id="contours" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g id="contours-lignes"></g>
+      <g transform="translate(590 240)" class="point-geodesique">
+        <path d="M-10 0H10M0-10V10"/>
+        <circle r="4"/>
+      </g>
+    </svg>
+
+    <div class="hero-texte">
+      <p class="surtitre">Géomatique · Télédétection · Photogrammétrie</p>
+      <h1>Du pixel à la décision&nbsp;: <em>cartographier</em> pour comprendre le territoire.</h1>
+      <p class="chapo">
+        Je suis <strong>Pierre Gbodja Noukpo</strong>, géomaticien. De l'acquisition d'images aériennes
+        à l'analyse spatiale, je conçois des chaînes de traitement SIG reproductibles et des cartes
+        lisibles qui transforment la donnée géographique en information utile.
+      </p>
+      <div class="actions">
+        <a class="btn plein" href="#projets">Explorer la carte</a>
+        <a class="btn" href="#contact">Me contacter</a>
+      </div>
+      <ul class="reperes" aria-label="Domaines d'expertise">
+        <li><b>SIG</b> analyse spatiale</li>
+        <li><b>MNT</b> modélisation du relief</li>
+        <li><b>NDVI</b> indices spectraux</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 2. CARTE INTERACTIVE ============ -->
+  <section class="section" id="projets">
+    <p class="num">01 — Projets géolocalisés</p>
+    <h2>Carte interactive</h2>
+    <p class="intro">
+      Quatre études de cas réparties dans le monde. Cliquez sur un marqueur pour ouvrir sa fiche
+      (problématique, données sources, outils, résultat), changez de fond de carte et activez
+      l'emprise des zones d'étude depuis le sélecteur en haut à droite.
+    </p>
+
+    <div class="carte-cadre">
+      <div id="carte" role="application" aria-label="Carte interactive des projets"></div>
+      <div class="barre-etat" aria-live="off">
+        <span>LAT <b id="st-lat">—</b></span>
+        <span>LON <b id="st-lon">—</b></span>
+        <span>ZOOM <b id="st-zoom">—</b></span>
+        <span class="st-scr">SCR&nbsp;: EPSG:4326 (WGS 84)</span>
+      </div>
+    </div>
+    <div class="puces" id="puces-projets" aria-label="Accès rapide aux projets"></div>
+  </section>
+
+  <!-- ============ 3. COMPARATEUR AVANT / APRÈS ============ -->
+  <section class="section" id="comparateur">
+    <p class="num">02 — Télédétection</p>
+    <h2>De l'image brute à la classification</h2>
+    <p class="intro">
+      Faites glisser la poignée pour comparer une même emprise&nbsp;: à gauche la composition colorée
+      en couleurs naturelles, à droite la classification supervisée de l'occupation du sol.
+    </p>
+
+    <div class="compare" id="compare" style="--pos:50%">
+      <div class="compare-couche" id="cmp-apres"></div>
+      <div class="compare-couche compare-avant" id="cmp-avant"></div>
+      <span class="etiquette gauche">Image satellite brute</span>
+      <span class="etiquette droite">Occupation du sol classifiée</span>
+      <div class="compare-poignee" id="cmp-poignee" role="slider" tabindex="0"
+           aria-label="Position du comparateur" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <span aria-hidden="true">◂ ▸</span>
+      </div>
+    </div>
+
+    <ul class="legende" aria-label="Légende de la classification">
+      <li><i style="background:#1b7837"></i>Forêt dense</li>
+      <li><i style="background:#a6d96a"></i>Savane / prairie</li>
+      <li><i style="background:#fee08b"></i>Cultures</li>
+      <li><i style="background:#d73027"></i>Tissu bâti</li>
+      <li><i style="background:#c2a57a"></i>Sol nu</li>
+      <li><i style="background:#2b83ba"></i>Surfaces en eau</li>
+    </ul>
+  </section>
+
+  <!-- ============ 4. GALERIE ============ -->
+  <section class="section" id="galerie">
+    <p class="num">03 — Vitrines Instagram</p>
+    <h2>Galerie cartographique</h2>
+    <p class="intro">Six créations à filtrer par thématique. Cliquez sur un visuel pour l'afficher en grand avec ses métadonnées techniques.</p>
+
+    <div class="filtres" id="filtres" role="group" aria-label="Filtrer la galerie">
+      <button class="filtre actif" data-cat="tous" aria-pressed="true">Tout</button>
+      <button class="filtre" data-cat="Cartographie 3D" aria-pressed="false">Cartographie 3D</button>
+      <button class="filtre" data-cat="Télédétection" aria-pressed="false">Télédétection</button>
+      <button class="filtre" data-cat="Analyse Urbaine" aria-pressed="false">Analyse Urbaine</button>
+    </div>
+
+    <!-- Les 6 cartes sont générées par script.js (tableau "creations") -->
+    <div class="grille-galerie" id="grille-galerie"></div>
+  </section>
+
+  <!-- Visionneuse (lightbox) -->
+  <dialog id="visionneuse" aria-labelledby="vis-titre">
+    <div class="vis-grille">
+      <div class="vis-visuel" id="vis-visuel"></div>
+      <div class="vis-infos">
+        <p class="vis-cat" id="vis-cat"></p>
+        <h3 id="vis-titre"></h3>
+        <p id="vis-desc"></p>
+        <dl>
+          <dt>Système de projection</dt><dd id="vis-epsg"></dd>
+          <dt>Sources des données</dt><dd id="vis-sources"></dd>
+          <dt>Logiciels utilisés</dt><dd id="vis-logiciels"></dd>
+        </dl>
+        <a class="btn plein" href="https://www.instagram.com/gbodjapierre7" target="_blank" rel="noopener">Voir sur Instagram</a>
+      </div>
+    </div>
+    <button class="vis-fermer" id="vis-fermer" aria-label="Fermer la visionneuse">×</button>
+  </dialog>
+
+  <!-- ============ 5. COMPÉTENCES ============ -->
+  <section class="section" id="competences">
+    <p class="num">04 — Boîte à outils</p>
+    <h2>Compétences SIG</h2>
+    <div class="grille-outils">
+      <article class="outil">
+        <span class="sigle">Q</span>
+        <h3>QGIS</h3>
+        <p>Géotraitements, modeleur graphique, sémiologie et mise en page cartographique.</p>
+      </article>
+      <article class="outil">
+        <span class="sigle">Ar</span>
+        <h3>ArcGIS Pro</h3>
+        <p>Géodatabases, analyse de réseau, Spatial Analyst et scènes 3D.</p>
+      </article>
+      <article class="outil">
+        <span class="sigle">Pg</span>
+        <h3>PostGIS</h3>
+        <p>Bases de données spatiales, requêtes SQL, index GiST et topologie.</p>
+      </article>
+      <article class="outil">
+        <span class="sigle">Py</span>
+        <h3>Python / GeoPandas</h3>
+        <p>Automatisation des chaînes de traitement vecteur et raster (rasterio, Shapely).</p>
+      </article>
+      <article class="outil">
+        <span class="sigle">EE</span>
+        <h3>Google Earth Engine</h3>
+        <p>Séries temporelles Sentinel et Landsat, indices spectraux, classification.</p>
+      </article>
+      <article class="outil">
+        <span class="sigle">Lf</span>
+        <h3>Leaflet</h3>
+        <p>Webmapping interactif, flux tuilés et couches GeoJSON.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section" id="contact">
+    <p class="num">05 — Contact</p>
+    <h2>Parlons de votre projet</h2>
+    <div class="contact-grille">
+      <div>
+        <p class="intro">
+          Levé photogrammétrique, production cartographique, analyse spatiale ou webmapping&nbsp;:
+          décrivez votre besoin, je vous réponds rapidement.
+        </p>
+        <a class="btn" href="https://www.instagram.com/gbodjapierre7" target="_blank" rel="noopener">Instagram @gbodjapierre7</a>
+      </div>
+
+      <!-- Formulaire "en façade" : il valide la saisie mais n'envoie rien.
+           Pour un envoi réel, branchez-le sur un service comme Formspree (voir script.js). -->
+      <form id="formulaire" novalidate>
+        <label>Nom
+          <input type="text" name="nom" required autocomplete="name" placeholder="Votre nom">
+        </label>
+        <label>Adresse e-mail
+          <input type="email" name="email" required autocomplete="email" placeholder="vous@exemple.com">
+        </label>
+        <label>Type de prestation
+          <select name="objet">
+            <option>Cartographie thématique</option>
+            <option>Photogrammétrie / imagerie aérienne</option>
+            <option>Télédétection</option>
+            <option>Analyse spatiale / SIG</option>
+            <option>Autre demande</option>
+          </select>
+        </label>
+        <label>Message
+          <textarea name="message" rows="5" required minlength="10" placeholder="Zone d'étude, données disponibles, livrables attendus…"></textarea>
+        </label>
+        <button class="btn plein" type="submit">Envoyer le message</button>
+        <p class="form-etat" id="form-etat" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Pierre Gbodja Noukpo — Fonds de carte © OpenStreetMap contributors, © CARTO, Esri, OpenTopoMap</p>
+  </footer>
+
+</body>
+</html>
